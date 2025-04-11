@@ -1,65 +1,45 @@
-# Miningcore.WebUI
-<h4>Miningcore WebUI for the Coinfoundry Miningcore Pool</h4>
+# MandellaMiningUI
 
-Miningcore is one of the best open source minning pools there are.
-To make this pool look good, you have to have a nice and fast user interface.
-Miningcore.WebUI does that for you and it open source. so you can change it as you want. 
+**MandellaMiningUI for the Mandella Wallet Mining Pool**
 
-How to install & Configure
-This Miningcore WebUI need a working Miningcore Pool API
-- Download the Miningcore.WebUI files
-- Save them on your webserver and point your webserver config to the index.html
-  
-You should now see the site and live pool API info
+MandellaMiningUI is a sleek, open-source web interface designed for the Mandella Wallet mining pool, built upon the robust foundation of Miningcore. It provides a fast, user-friendly dashboard to monitor and interact with your mining pool, displaying live data such as pool statistics, hashrate, and miner details. As an open-source project, MandellaMiningUI is fully customizable to suit your needs.
 
-  
-<b>Website is visible, but no live data is shown</b></br>
-Live info data is retrieved from the miningcore pool API.</br>
-The WebUI website default looks at the domain-name/api.</br>
-If this is not you api location, you need to edit the miningcore.js file.</br>
+---
 
-Chang API location</br>
-- open the WebUI config file in you editor: js/miningcore.js
-- change the following:
+## About MandellaMiningUI
 
-var WebURL         = window.location.protocol + "//" + window.location.hostname + "/";</br>
-var API            = WebURL + "api/";</br>
-var stratumAddress = "stratum+tcp://" + window.location.hostname + ":";</br>
+MandellaMiningUI enhances the experience of running a mining pool by offering a modern and intuitive interface. Forked from **Miningcore.WebUI**, it integrates seamlessly with the **Miningcore Pool API** to deliver real-time insights. Whether you're a pool operator or a miner, MandellaMiningUI makes tracking performance effortless and visually appealing.
 
+🔗 **Live Pool Website**: [pool.mandellawallet.com](https://pool.mandellawallet.com)
 
-it should be like this:</br>
-(replace domain-name.com is you own domain name)</br>
-var WebURL = "https://domain-name.com/";</br>
-var API = "https://domain-name.com/api/";</br>
-var stratumAddress = "stratum+tcp://domain-name.com:";</br>
+---
 
+## Prerequisites
 
+To use MandellaMiningUI, you need:
 
-<b>Live Miningcore.WebUI</b></br>
-My pool website can be found at https://miningcore.eu
+- ✅ A working **Miningcore Pool API** (configured and running).
+- ✅ A **web server** (e.g., Nginx, Apache) to host the UI files.
+- ✅ Basic knowledge of **web server configuration** and **JavaScript**.
 
+---
 
-<b>Suggestion</b></br>
-Do you have any idea what to add more to the website, or you found a bug
-let me know and we will see what we can do.
+## Installation & Configuration
 
+### 1. Download MandellaMiningUI Files
 
-<b>Roadmap:</b></br>
-- add multiple single miningcore pool servers in one website
-- add more color skins out off the box
-- add last time block found (sec / min / hours)
-- add blockchain height (number)
-- add current round variance  (in %)
-- add pool fee (in %)
-- add block maturity (number blocks)
-- add payment frequency  (hours)
-- add payment threshold
+Clone or download the repository from:  
+👉 [https://github.com/mandella-wallet/MandellaMiningUI](https://github.com/mandella-wallet/MandellaMiningUI)
 
+### 2. Host on Your Web Server
 
-<b>Changes:</b></br>
-Version 1.0  (1 jul 2019)
-- simple and fast WebUI (html and javascript)
-- one file website displays selected info block and hides the rest
-- one modern colorfull look 
+- Copy the downloaded files to your web server’s root directory.
+- Configure your web server to point to `index.html` as the entry point.
 
+### 3. Verify Setup
 
+- Open your browser and navigate to your domain (e.g., `https://pool.mandellawallet.com`).
+- You should see the MandellaMiningUI interface.
+- If live data isn’t displayed, proceed to configure the API settings.
+
+Happy Mining! 🚀
