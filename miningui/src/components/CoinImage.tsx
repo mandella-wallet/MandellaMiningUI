@@ -1,6 +1,7 @@
-"use client"; // Mark this as a Client Component
+"use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 interface CoinImageProps {
   src: string;
@@ -12,15 +13,20 @@ export default function CoinImage({ src, alt, className }: CoinImageProps) {
   const [imgSrc, setImgSrc] = useState(src);
 
   const handleError = () => {
-    setImgSrc("/img/coin/icon/default.png");
+    if (imgSrc !== "/img/coin/icon/default.png") {
+      setImgSrc("/img/coin/icon/default.png");
+    }
   };
 
   return (
-    <img
+    <Image
       src={imgSrc}
       alt={alt}
       className={className}
       onError={handleError}
+      width={100} // Adjust based on your needs
+      height={100} // Adjust based on your needs
+      priority={false} // Optional: for lazy loading
     />
   );
 }

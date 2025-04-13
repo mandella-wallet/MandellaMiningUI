@@ -140,7 +140,7 @@ export default async function Home() {
                             className="bg-solana-teal hover:bg-solana-teal/80 text-solana-dark"
                             asChild
                           >
-                            <Link href={`/${pool.id}`}>Mine Now</Link>
+                            <Link href={`/pools/${pool.id}`}>View</Link>
                           </Button>
                         </TableCell>
                       </TableRow>

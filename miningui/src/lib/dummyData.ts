@@ -51,9 +51,50 @@ export interface Miner {
 }
 
 export interface PoolDetails {
-  pool: PoolCoin;
-  recentBlocks: Block[];
-  topMiners: Miner[];
+  pool?: {
+    id?: string;
+    coin?: {
+      type?: string;
+      name?: string;
+      symbol?: string;
+      website?: string;
+      market?: string;
+      family?: string;
+      algorithm?: string;
+      twitter?: string;
+      telegram?: string;
+    };
+    poolStats?: {
+      connectedMiners?: number;
+      poolHashrate?: number;
+      sharesPerSecond?: number;
+    };
+    poolFeePercent?: number;
+    totalPaid?: number;
+    totalBlocks?: number;
+    totalConfirmedBlocks?: number;
+    totalPendingBlocks?: number;
+    blockReward?: number;
+    lastPoolBlockTime?: string;
+    poolEffort?: number;
+    networkStats?: {
+      networkType?: string;
+      networkHashrate?: number;
+      networkDifficulty?: number;
+      nextNetworkTarget?: string;
+      nextNetworkBits?: string;
+      lastNetworkBlockTime?: string;
+      blockHeight?: number;
+      connectedPeers?: number;
+      nodeVersion?: string;
+      rewardType?: string;
+    };
+    topMiners?: { address: string; hashrate: number }[];
+    address?: string;
+    addressInfoLink?: string;
+  };
+  recentBlocks?: { blockHeight: number; timestamp: string; reward: number }[];
+  error?: string;
 }
 
 // Types for Miner Dashboard (/dashboard Page)
