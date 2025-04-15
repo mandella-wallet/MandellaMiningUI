@@ -9,28 +9,34 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { fetchStats, fetchHistoricalStats, formatValue } from "@/lib/api";
+import { fetchStats, fetchHistoricalStats, formatValue, fetchPoolDetails } from "@/lib/api";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HashrateChart from "@/components/HashrateChart";
+import PoolBreadcrumb from "@/components/PoolBreadcrumb";
 
 export const revalidate = 60; // Revalidate page every 60 seconds
 
 export default async function StatsPage({ params }: { params: { id: string } }) {
-  const [poolStats, historicalStats] = await Promise.all([
+  const [poolStats, historicalStats, poolDetails] = await Promise.all([
     fetchStats(params.id),
     fetchHistoricalStats(params.id),
+    fetchPoolDetails(params.id)
   ]);
+
+  // Safe access to pool data
+  const { pool } = poolDetails;
 
   return (
     <div className="min-h-screen bg-solana-dark text-white">
       <Header />
-
-      {/* Pool Stats Section */}
-      <section className="container mx-auto py-8 px-4">
+      <section className="container mx-auto py-12 px-4">
+        <PoolBreadcrumb poolId={params.id} poolName={pool.coin?.name} currentPage="stats" />
+        
+        {/* Pool Stats Section */}
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold text-solana-teal">Pool Statistics</h1>
-          <p className="text-solana-gray mt-2">Overall performance metrics for Mandella Mining Pool</p>
+          <p className="text-solana-gray mt-2">Overall performance metrics for {pool.coin?.name || 'Mining'} Pool</p>
         </div>
 
         {/* Overall Stats Cards */}
