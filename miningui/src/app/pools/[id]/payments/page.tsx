@@ -11,24 +11,62 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { fetchPoolPayments, formatValue, PoolPayment } from "@/lib/api";
+import { fetchPoolPayments, formatValue, PoolPayment, fetchPoolDetails } from "@/lib/api";
 import CoinImage from "@/components/CoinImage";
-import Header from "@/components/Header"; // Import the Header component
-import Footer from "@/components/Footer"; // Import the Footer component
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import PoolBreadcrumb from "@/components/PoolBreadcrumb";
 
-export default async function PaymentsPage() {
-  const poolPayments: PoolPayment[] = await fetchPoolPayments();
+export default async function PaymentsPage({ params }: { params: { id: string } }) {
+  const [poolPayments, poolDetails] = await Promise.all([
+    fetchPoolPayments(params.id),
+    fetchPoolDetails(params.id)
+  ]);
+
+  // Handle null or errored data
+  if (!poolDetails.pool || poolDetails.error) {
+    return (
+      <div className="min-h-screen bg-solana-dark text-white">
+        <Header />
+        <section className="container mx-auto py-12 px-4">
+          <Card className="bg-solana-dark/80 border-none shadow-glow">
+            <CardHeader>
+              <CardTitle className="text-xl text-solana-teal flex items-center">
+                <i className="fas fa-exclamation-triangle mr-2"></i> Error
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-solana-gray">
+                {poolDetails.error || "Unable to load pool data."}
+              </p>
+              <Button
+                asChild
+                variant="outline"
+                className="mt-4 border-solana-teal text-solana-teal hover:bg-solana-teal hover:text-solana-dark"
+              >
+                <Link href="/">Return to Home</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </section>
+        <Footer />
+      </div>
+    );
+  }
+
+  const { pool } = poolDetails;
 
   return (
     <div className="min-h-screen bg-solana-dark text-white">
-      {/* Header */}
-      <Header /> {/* Use the Header component */}
+      <Header />
 
-      {/* Pool Payments Section */}
-      <section className="container mx-auto py-16">
+      <section className="container mx-auto py-12 px-4">
+        <PoolBreadcrumb poolId={params.id} poolName={pool.coin?.name} currentPage="payments" />
+        
+        {/* Pool Payments Section */}
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold text-solana-teal">Pool Payments</h1>
-          <p className="text-solana-gray">Recent payments made to miners across all Mandella pools.</p>
+          <p className="text-solana-gray mt-2">Recent payments made to miners in {pool.coin?.name || 'Mining'} Pool</p>
         </div>
 
         {/* Pool Payments Table */}
@@ -57,14 +95,14 @@ export default async function PaymentsPage() {
                       className="hover:bg-solana-teal/10 transition-colors"
                     >
                       <TableCell>
-                        <Link href={`/${payment.poolId}`} className="flex items-center">
+                        <Link href={`/pools/${payment.poolId}`} className="flex items-center">
                           <CoinImage
-                            src={`/img/coin/icon/${payment.coinType.toLowerCase()}.png`}
-                            alt={`${payment.poolName} logo`}
+                            src={`/img/coin/icon/${pool.coin?.type.toLowerCase()}.png`}
+                            alt={`${pool.coin?.name} logo`}
                             className="w-6 h-6 mr-2"
                           />
                           <span className="font-medium text-solana-teal">
-                            {payment.poolName}
+                            {pool.coin?.name}
                           </span>
                         </Link>
                       </TableCell>
@@ -74,7 +112,7 @@ export default async function PaymentsPage() {
                       <TableCell>{payment.timestamp}</TableCell>
                       <TableCell>
                         <Badge className="bg-solana-purple text-white">
-                          {formatValue(payment.amount, 5, payment.coinType)}
+                          {formatValue(payment.amount, 5, pool.coin?.type)}
                         </Badge>
                       </TableCell>
                       <TableCell className="font-mono text-sm break-all">
@@ -101,7 +139,7 @@ export default async function PaymentsPage() {
         </Card>
       </section>
 
-      <Footer /> {/* Use the Footer component */}
+      <Footer />
     </div>
   );
 }
