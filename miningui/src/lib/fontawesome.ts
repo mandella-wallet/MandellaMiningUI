@@ -9,7 +9,18 @@ import {
   faWallet,
   faPlug,
   faCommentDots,
-  faHeadphoneAlt,
+  faRocket,
+  faUserPlus,
+  faCogs,
+  faServer,
+  faStar,
+  faLaptop,
+  faBolt,
+  faClock,
+  faCheck,
+  faGear,
+  faArrowRight,
+  
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -22,5 +33,15 @@ library.add(
   faWallet,
   faPlug,
   faCommentDots,
-  faHeadphoneAlt
+  faRocket,
+  faUserPlus,
+  faCogs,
+  faServer,
+  faStar,
+  faLaptop,
+  faBolt,
+  faClock,
+  faCheck,
+  faGear,
+  faArrowRight
 );

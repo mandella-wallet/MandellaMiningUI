@@ -34,25 +34,10 @@ export default function Header() {
                 </a>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/pools">Explore Pools</Link>
+                <Link href="/available-pools">Available Pools</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/stats">Pool Stats</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard">Dashboard</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/miners">Top Miners</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/blocks">Found Blocks</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/payments">Payments</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/connect">Connect</Link>
+                <Link href="/about-us">About Us</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
