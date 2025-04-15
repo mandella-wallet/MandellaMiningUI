@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
   Table,
@@ -10,27 +9,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { fetchStats, fetchHistoricalStats, PoolStats, HistoricalStat, formatValue } from "@/lib/api";
-import Header from "@/components/Header"; // Import the Header component
-import Footer from "@/components/Footer"; // Import the Footer component
+import { fetchStats, fetchHistoricalStats, formatValue } from "@/lib/api";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import HashrateChart from "@/components/HashrateChart";
 
-export default async function StatsPage() {
-  const poolStats: PoolStats = await fetchStats();
-  const historicalStats: HistoricalStat[] = await fetchHistoricalStats();
+export const revalidate = 60; // Revalidate page every 60 seconds
+
+export default async function StatsPage({ params }: { params: { id: string } }) {
+  const [poolStats, historicalStats] = await Promise.all([
+    fetchStats(params.id),
+    fetchHistoricalStats(params.id),
+  ]);
 
   return (
     <div className="min-h-screen bg-solana-dark text-white">
-      {/* Header */}
-      <Header /> {/* Use the Header component */}
+      <Header />
 
       {/* Pool Stats Section */}
-      <section className="container mx-auto py-16">
+      <section className="container mx-auto py-8 px-4">
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold text-solana-teal">Pool Statistics</h1>
-          <p className="text-solana-gray">Overall performance of Mandella Mining Pool.</p>
+          <p className="text-solana-gray mt-2">Overall performance metrics for Mandella Mining Pool</p>
         </div>
 
-        {/* Overall Stats */}
+        {/* Overall Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           <Card className="shadow-glow border-none bg-solana-dark/80">
             <CardHeader className="bg-solana-teal text-solana-dark">
@@ -40,10 +43,11 @@ export default async function StatsPage() {
             </CardHeader>
             <CardContent className="pt-6">
               <p className="text-2xl font-semibold text-solana-teal">
-                {formatValue(poolStats.totalHashrate, 5, "H/s")}
+                {formatValue(poolStats.poolHashrate, 5, "H/s")}
               </p>
             </CardContent>
           </Card>
+
           <Card className="shadow-glow border-none bg-solana-dark/80">
             <CardHeader className="bg-solana-teal text-solana-dark">
               <CardTitle className="text-xl flex items-center">
@@ -52,57 +56,76 @@ export default async function StatsPage() {
             </CardHeader>
             <CardContent className="pt-6">
               <p className="text-2xl font-semibold text-solana-teal">
-                {poolStats.activeMiners}
+                {poolStats.connectedMiners}
               </p>
             </CardContent>
           </Card>
+
           <Card className="shadow-glow border-none bg-solana-dark/80">
             <CardHeader className="bg-solana-teal text-solana-dark">
               <CardTitle className="text-xl flex items-center">
-                <i className="fas fa-cube mr-2"></i> Blocks Mined
+                <i className="fas fa-chart-line mr-2"></i> Shares/Second
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
               <p className="text-2xl font-semibold text-solana-teal">
-                {poolStats.blocksMined}
+                {formatValue(poolStats.sharesPerSecond, 2, "/s")}
               </p>
             </CardContent>
           </Card>
         </div>
 
-        {/* Historical Stats */}
+        {/* Hashrate Chart */}
+        <Card className="shadow-glow border-none bg-solana-dark/80 mb-12">
+          <CardHeader className="bg-solana-teal text-solana-dark">
+            <CardTitle className="text-2xl">Hashrate History</CardTitle>
+          </CardHeader>
+          <CardContent className="pt-6">
+            {historicalStats.length > 0 ? (
+              <HashrateChart data={historicalStats} />
+            ) : (
+              <div className="text-center py-8 text-solana-gray">
+                No historical data available
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Historical Stats Table */}
         <Card className="shadow-glow border-none bg-solana-dark/80">
           <CardHeader className="bg-solana-teal text-solana-dark">
             <CardTitle className="text-2xl flex items-center">
-              <i className="fas fa-chart-line mr-2"></i> Historical Stats
+              <i className="fas fa-history mr-2"></i> Historical Stats
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             <Table>
               <TableHeader>
                 <TableRow className="bg-solana-teal text-solana-dark">
-                  <TableHead>Date</TableHead>
+                  <TableHead>Timestamp</TableHead>
                   <TableHead>Hashrate</TableHead>
                   <TableHead>Miners</TableHead>
-                  <TableHead>Blocks Mined</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {historicalStats.length > 0 ? (
-                  historicalStats.map((stat, index) => (
+                  historicalStats.map((stat) => (
                     <TableRow
-                      key={stat.date}
+                      key={stat.timestamp}
                       className="hover:bg-solana-teal/10 transition-colors"
                     >
-                      <TableCell>{stat.date}</TableCell>
-                      <TableCell>{formatValue(stat.hashrate, 5, "H/s")}</TableCell>
-                      <TableCell>{stat.miners}</TableCell>
-                      <TableCell>{stat.blocks}</TableCell>
+                      <TableCell>
+                        {new Date(stat.timestamp).toLocaleString()}
+                      </TableCell>
+                      <TableCell>
+                        {formatValue(stat.poolHashrate, 5, "H/s")}
+                      </TableCell>
+                      <TableCell>{stat.connectedMiners}</TableCell>
                     </TableRow>
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={4} className="text-center py-8">
+                    <TableCell colSpan={3} className="text-center py-8">
                       <div className="bg-solana-pink/20 border-l-4 border-solana-pink p-4 rounded">
                         <h4 className="text-lg font-semibold text-solana-pink flex items-center">
                           <i className="fas fa-exclamation-triangle mr-2"></i> No Data
@@ -119,7 +142,7 @@ export default async function StatsPage() {
         </Card>
       </section>
 
-      <Footer /> {/* Use the Footer component */}
+      <Footer />
     </div>
   );
 }
