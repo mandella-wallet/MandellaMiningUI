@@ -1,45 +1,98 @@
-# MandellaMiningUI
+# Mandella Mining UI Web App
 
-**MandellaMiningUI for the Mandella Wallet Mining Pool**
+A modern, open-source web interface for the Mandella Wallet mining pool, built with Next.js and Tailwind CSS. It provides a sleek dashboard for monitoring and interacting with your mining pool, offering real-time pool statistics and hashrate monitoring, miner details and performance tracking, and modern, responsive design with Tailwind CSS.
 
-MandellaMiningUI is a sleek, open-source web interface designed for the Mandella Wallet mining pool, built upon the robust foundation of Miningcore. It provides a fast, user-friendly dashboard to monitor and interact with your mining pool, displaying live data such as pool statistics, hashrate, and miner details. As an open-source project, MandellaMiningUI is fully customizable to suit your needs.
+## Overview
 
----
+Mandella Mining UI provides a sleek dashboard for monitoring and interacting with your mining pool, offering:
 
-## About MandellaMiningUI
+- Real-time pool statistics and hashrate monitoring
+- Miner details and performance tracking
+- Modern, responsive design with Tailwind CSS
+- Integration with Miningcore Pool API
+- Built on Next.js 14 for optimal performance
 
-MandellaMiningUI enhances the experience of running a mining pool by offering a modern and intuitive interface. Forked from **Miningcore.WebUI**, it integrates seamlessly with the **Miningcore Pool API** to deliver real-time insights. Whether you're a pool operator or a miner, MandellaMiningUI makes tracking performance effortless and visually appealing.
-
-🔗 **Live Pool Website**: [pool.mandellawallet.com](https://pool.mandellawallet.com)
-
----
+🔗 **Live Pool**: [pool.mandellawallet.com](https://pool.mandellawallet.com)
 
 ## Prerequisites
 
-To use MandellaMiningUI, you need:
+- Node.js 18.17.0 or later
+- npm or yarn package manager
+- Miningcore Pool API endpoint
 
-- ✅ A working **Miningcore Pool API** (configured and running).
-- ✅ A **web server** (e.g., Nginx, Apache) to host the UI files.
-- ✅ Basic knowledge of **web server configuration** and **JavaScript**.
+## Quick Start
 
----
+1. Clone the repository:
+```bash
+git clone https://github.com/mandella-wallet/MandellaMiningUI.git
+cd MandellaMiningUI/miningui
+```
 
-## Installation & Configuration
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
 
-### 1. Download MandellaMiningUI Files
+3. Configure environment variables:
+Create a `.env.local` file:
+```
+NEXT_PUBLIC_API_BASE_URL=your_miningcore_api_url
+```
 
-Clone or download the repository from:  
-👉 [https://github.com/mandella-wallet/MandellaMiningUI](https://github.com/mandella-wallet/MandellaMiningUI)
+4. Run development server:
+```bash
+npm run dev
+# or
+yarn dev
+```
 
-### 2. Host on Your Web Server
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-- Copy the downloaded files to your web server’s root directory.
-- Configure your web server to point to `index.html` as the entry point.
+## Build for Production
 
-### 3. Verify Setup
+```bash
+npm run build
+npm run start
+# or
+yarn build
+yarn start
+```
 
-- Open your browser and navigate to your domain (e.g., `https://pool.mandellawallet.com`).
-- You should see the MandellaMiningUI interface.
-- If live data isn’t displayed, proceed to configure the API settings.
+## Technology Stack
 
-Happy Mining! 🚀
+- **Framework**: Next.js 14
+- **Styling**: Tailwind CSS
+- **UI Components**: Radix UI
+- **Icons**: FontAwesome, Lucide React
+- **Charts**: Recharts
+- **Type Safety**: TypeScript
+
+## Project Structure
+
+```
+miningui/
+├── src/
+│   ├── app/          # Next.js app router pages
+│   ├── components/   # React components
+│   ├── lib/          # Utilities and helpers
+│   └── styles/       # Global styles
+├── public/           # Static assets
+└── tailwind.config.js
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is open-source and available under the MIT License.
+
+## Support
+
+For support, join our community:
+- Email: support@mandellawallet.com
+- Telegram: [mandellawallet](https://t.me/mandellawallet)
+- X (Twitter): [@mandellawallet](https://x.com/mandellawallet)
